@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: gev-cuanto-vale
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .

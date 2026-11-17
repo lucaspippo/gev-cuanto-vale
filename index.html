@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GE Vernova · ¿Cuánto vale?</title>
+<meta name="description" content="Modelo de valuación de GE Vernova (DCF con WACC). Trabajo práctico de Finanzas, Grupo 12.">
+<meta name="theme-color" content="#08090B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&family=Big+Shoulders+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--neg:#08090B;--neg2:#15181D;--lin:#2A2E35;--bla:#F5F5F0;--gris:#8B9099;--menta:#2EE6A8;--verde:#00A37A;--rojo:#FF4B3E;--azul:#5B8CFF;--ambar:#FFC247}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--neg);color:var(--bla);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;padding-bottom:40px}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+.num{font-family:"Big Shoulders Display",Archivo,sans-serif;font-weight:900;letter-spacing:.01em;line-height:.95}
+.lab{font-size:11.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gris)}
+header{padding:26px 0 8px}
+.brand{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pill{background:var(--neg2);border-radius:99px;padding:7px 14px;font-weight:800;font-size:14px;white-space:nowrap}
+.pill i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--menta);margin-right:8px;animation:late 1.4s infinite ease-in-out}
+@keyframes late{50%{transform:scale(1.6);opacity:.6}}
+h1{font-family:"Big Shoulders Display";font-weight:900;font-size:clamp(52px,15vw,96px);line-height:.88;margin:26px 0 12px;text-transform:uppercase}
+h1 em{font-style:normal;color:var(--menta)}
+.intro{color:#C9CCD1;font-size:17px;max-width:560px}
+h2{font-family:"Big Shoulders Display";font-weight:900;font-size:34px;text-transform:uppercase;line-height:1;margin:6px 0 4px}
+section{margin-top:26px}
+.card{background:var(--neg2);border-radius:22px;padding:20px 18px;margin-top:12px}
+.sub{color:var(--gris);font-size:14.5px;margin-bottom:6px}
+
+/* resultado fijo */
+#res{position:sticky;top:0;z-index:5;background:rgba(8,9,11,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--lin);padding:10px 0}
+#res .in{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#res .v{font-size:46px}
+#res .d{font-weight:800;font-size:15px}
+#sello{font-family:"Big Shoulders Display";font-weight:900;font-size:21px;letter-spacing:.04em;padding:8px 13px;border-radius:10px;transform:rotate(-4deg);text-align:center;line-height:1;color:var(--neg);transition:background .3s}
+.pop{animation:pop .35s ease-out}
+@keyframes pop{0%{transform:rotate(-4deg) scale(1.5);opacity:.3}100%{transform:rotate(-4deg) scale(1)}}
+
+/* perillas */
+.kn{padding:14px 0;border-bottom:1px solid var(--lin)}
+.kn:last-child{border-bottom:0}
+.kn .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.kn .t{font-weight:700;font-size:16.5px}
+.kn .val{font-size:34px;color:var(--menta)}
+.kn .h{color:var(--gris);font-size:13.5px;margin-top:2px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:34px;background:transparent;margin-top:4px}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:9px;background:linear-gradient(90deg,var(--menta) var(--p,50%),var(--lin) var(--p,50%))}
+input[type=range]::-moz-range-track{height:6px;border-radius:9px;background:var(--lin)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:9px;background:var(--menta)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--bla);border:5px solid var(--menta);margin-top:-11px;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--bla);border:5px solid var(--menta)}
+.pres{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.pres button{flex:1 1 30%;min-width:96px;background:transparent;color:var(--bla);border:1.5px solid var(--lin);border-radius:14px;padding:10px 8px;font:inherit;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.pres button small{display:block;font-weight:500;letter-spacing:0;text-transform:none;color:var(--gris);font-size:12px;margin-top:2px}
+.pres button.on{border-color:var(--menta);background:rgba(46,230,168,.1)}
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:Archivo,sans-serif;fill:var(--gris);font-size:22px;font-weight:700}
+svg .n{font-family:"Big Shoulders Display";font-weight:900}
+.bar,.mv{transition:all .45s cubic-bezier(.2,.8,.2,1)}
+.eq{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin-top:6px}
+.eq .num{font-size:40px}
+.eq span.o{color:var(--gris);font-weight:800;font-size:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.kpi{background:var(--neg);border-radius:16px;padding:14px}
+.kpi .num{font-size:36px}
+.kpi p{color:var(--gris);font-size:13px;margin-top:3px}
+.frase{font-size:19px;font-weight:700;margin-top:12px}
+.frase b{color:var(--menta)}
+footer{color:var(--gris);font-size:12.5px;margin-top:40px;border-top:1px solid var(--lin);padding-top:16px}
+footer p{margin-top:6px}summary{cursor:pointer;font-weight:700;color:var(--bla)}
+.xl{background:#fff;border-radius:14px;overflow:hidden;margin-top:12px;color:#1b1b1b;font-family:Arial,Helvetica,sans-serif}
+.xb{display:flex;gap:10px;align-items:center;background:#f3f3f3;border-bottom:1px solid #c8c8c8;padding:7px 10px;font-size:12.5px;color:#444}
+.xb b{font-style:italic;color:#107C41;font-family:Georgia,serif}
+.xs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#xt{border-collapse:collapse;font-size:12.5px;white-space:nowrap}
+#xt th{background:#f3f3f3;color:#666;font-weight:400;border:1px solid #d4d4d4;padding:3px 8px;text-align:center}
+#xt td{border:1px solid #e1e1e1;padding:5px 9px;text-align:right;min-width:62px}
+#xt td.l{text-align:left;position:sticky;left:0;background:#fff;min-width:150px;z-index:1;border-right:2px solid #c8c8c8}
+#xt tr.h td{background:#107C41;color:#fff;font-weight:700}
+#xt tr.h td.l{background:#107C41}
+#xt tr.t td{font-weight:700;background:#E2EFDA}
+#xt tr.t td.l{background:#E2EFDA}
+#xt tr.r td{font-weight:700;background:#FFF2CC}
+#xt tr.r td.l{background:#FFF2CC}
+#xt input{width:58px;border:0;background:#DDEBF7;color:#0000FF;font:inherit;text-align:right;padding:4px 5px;border-radius:3px}
+#xt input:focus{outline:2px solid #107C41;background:#fff}
+.tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--neg);background:var(--menta);border-radius:6px;padding:3px 8px;margin-bottom:8px}
+@media (prefers-reduced-motion:reduce){.bar,.mv{transition:none}.pill i{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand"><span class="lab">GE Vernova · Grupo 12 · Finanzas UCA</span><span class="pill"><i></i>GEV US$ 824</span></div>
+  <h1>¿Cuánto<br>vale? <em>Usted decide.</em></h1>
+  <p class="intro">Nuestro modelo de valuación. Mueva los supuestos.</p>
+</header>
+</div>
+
+<div id="res"><div class="wrap in">
+  <div><div class="lab">Su valor por acción</div><div class="num v" id="rv">US$ 513</div><div class="d" id="rd">–38% contra el precio</div></div>
+  <div id="sello">SOBREVALUADA</div>
+</div></div>
+
+<div class="wrap">
+<section>
+  
+  <div class="pres">
+    <button data-p="n" class="on">Nosotros<small>5 años de boom</small></button>
+    <button data-p="m">El mercado<small>15 años de boom</small></button>
+    <button data-p="a">Analistas<small>20 años y más margen</small></button>
+  </div>
+  <div class="card">
+    <div class="kn"><div class="top"><span class="t">Años de boom de la IA</span><span class="num val" id="vA"></span></div>
+      <input type="range" id="A" min="5" max="20" step="1" value="5"></div>
+    <div class="kn"><div class="top"><span class="t">Tasa libre de riesgo</span><span class="num val" id="vR"></span></div>
+      <input type="range" id="R" min="4" max="6" step="0.25" value="5"></div>
+    <div class="kn"><div class="top"><span class="t">Margen EBITDA</span><span class="num val" id="vM"></span></div>
+      <input type="range" id="M" min="16" max="28" step="1" value="22"></div>
+    <div class="kn"><div class="top"><span class="t">Crecimiento eterno (g)</span><span class="num val" id="vG"></span></div>
+      <input type="range" id="G" min="1.5" max="4.5" step="0.25" value="3"></div>
+    <div class="kn"><div class="top"><span class="t">Beta</span><span class="num val" id="vB"></span></div>
+      <input type="range" id="B" min="0.8" max="1.8" step="0.05" value="1.25"></div>
+  </div>
+</section>
+
+<section>
+  <h2>CAPM</h2>
+  <div class="card">
+    <div class="eq"><span class="num" id="eRf"></span><span class="o">+</span><span class="num" id="eB"></span><span class="o">×</span><span class="num">5%</span><span class="o">=</span><span class="num" id="eK" style="color:var(--menta);font-size:56px"></span></div>
+    <div class="g2">
+      <div class="kpi"><div class="lab">WACC</div><div class="num" id="kW"></div></div>
+      <div class="kpi"><div class="lab">Costo de la deuda</div><div class="num">3,2%</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Flujo de fondos libre</h2>
+  <div class="card">
+    <svg id="cF" viewBox="0 0 700 320"></svg>
+    <div class="g2">
+      <div class="kpi"><div class="lab">Valor empresa · US$ MM</div><div class="num" id="kEV"></div></div>
+      <div class="kpi"><div class="lab">Valor terminal</div><div class="num" id="kVT"></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Usted contra todos</h2>
+  <div class="card"><svg id="cR" viewBox="0 0 700 400"></svg></div>
+</section>
+
+<section>
+  <h2>SML: E(R) contra k</h2>
+  <div class="card">
+    <svg id="cS" viewBox="0 0 700 470"></svg>
+    <p class="frase" id="fS"></p>
+  </div>
+</section>
+
+<section>
+  <h2>VANOC</h2>
+  <div class="card">
+    <svg id="cV" viewBox="0 0 700 150"></svg>
+    <p class="frase" id="fV"></p>
+  </div>
+</section>
+
+<section>
+  <h2>PER contra sus pares</h2>
+  <div class="card"><svg id="cP" viewBox="0 0 700 400"></svg></div>
+</section>
+
+<section>
+  <h2>La planilla</h2>
+  <div class="xl"><div class="xb"><b>fx</b><span id="fx">Toque una celda azul para cambiarla</span></div><div class="xs"><table id="xt"></table></div></div>
+  <div class="pres"><button id="xr">Volver al caso base</button></div>
+</section>
+
+<footer>
+  <details><summary>Cómo se calcula y fuentes</summary>
+  <p>Ventas × margen = EBITDA; menos impuesto operativo (21%), CAPEX (3,5% de ventas) y capital de trabajo (2% del aumento de ventas) = flujo libre. Descuento a mitad de año con la WACC. Valor terminal = último flujo × (1 + g) / (WACC − g). Valor de la empresa + caja neta (US$ 11.961 M) ÷ 264,7 M de acciones. El crecimiento baja de 14% a 8% a lo largo de los años de boom; con 5 años es nuestro caso base (US$ 513).</p>
+  <p>Datos: Bloomberg al 12/11/2026, U.S. Treasury, Damodaran, stockanalysis.com.</p>
+  </details>
+  <p>Finanzas · UCA · Grupo 12. Ejercicio académico: no es una recomendación de inversión.</p>
+</footer>
+</div>
+
+<script>
+// ---------- modelo (igual a valuacion.py / Excel)
+const P=824.05,SH=264.7,CASH=16764,DEBT=3647,MINOR=1156,PRM=.05,KD=.041,T=.21,V0=47076,BPA=24.93,DPA=2,DA=.02,CAPEX=.035,DWC=.02,E=P*SH;
+const C0=[.14,.13,.12,.10,.08],M0=[.186,.20,.21,.22,.22],ANALISTAS=1156.53;
+const estirar=(b,n)=>Array.from({length:n},(_,j)=>{const t=j*(b.length-1)/(n-1),i=Math.min(Math.floor(t),b.length-2);return b[i]+(b[i+1]-b[i])*(t-i)});
+const caminos=(a,mf)=>[estirar(C0,a),estirar(M0,a).map(m=>M0[0]+(m-M0[0])*(mf-M0[0])/(M0[4]-M0[0]))];
+let SUP={t:T,capex:CAPEX,da:DA,dwc:DWC};
+function modelo(a,rf,mf,g,beta,cr,mg){
+  const ke=rf+beta*PRM,w=(E*ke+DEBT*KD*(1-SUP.t))/(E+DEBT);
+  if(!cr)[cr,mg]=caminos(a,mf);
+  let v=V0,pv=0;const f=[],filas=[];
+  cr.forEach((c,i)=>{const nv=v*(1+c),eb=nv*mg[i],imp=(eb-nv*SUP.da)*SUP.t,cx=nv*SUP.capex,ct=(nv-v)*SUP.dwc,fc=eb-imp-cx-ct,fd=1/Math.pow(1+w,i+.5);pv+=fc*fd;f.push(fc);filas.push({c,nv,m:mg[i],eb,imp,cx,ct,fc,fd,vp:fc*fd});v=nv});
+  a=cr.length;const vtn=f[a-1]*(1+g)/(w-g),vt=vtn/Math.pow(1+w,a-.5),ev=pv+vt;
+  return{ke,w,f,filas,pv,vtn,vt,ev,pvt:vt/ev,precio:(ev+CASH-DEBT-MINOR)/SH};
+}
+// ---------- formato
+const n=(x,d=0)=>x.toLocaleString('es-AR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const pc=(x,d=1)=>(x<0?'–':'')+n(Math.abs(x)*100,d)+'%';
+const $=id=>document.getElementById(id);
+const S=(tag,at,txt)=>{const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;return e};
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const col={menta:'#2EE6A8',rojo:'#FF4B3E',azul:'#5B8CFF',bla:'#F5F5F0',gris:'#8B9099',lin:'#2A2E35',ambar:'#FFC247',verde:'#00A37A'};
+
+// ---------- gráfico de flujos (barras que se reacomodan)
+function flujos(m){
+  const sv=$('cF');sv.innerHTML='';const W=700,H=320,b=270,N=m.f.length,mx=Math.max(...m.f),gap=N>12?6:10,bw=(W-20-(N-1)*gap)/N;
+  sv.append(S('line',{x1:0,y1:b,x2:W,y2:b,stroke:col.lin,'stroke-width':2}));
+  m.f.forEach((v,i)=>{const h=v/mx*200,x=10+i*(bw+gap);
+    const r=S('rect',{class:'bar',x,y:b,width:bw,height:0,rx:Math.min(6,bw/3),fill:i==N-1?col.menta:col.bla});sv.append(r);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{r.setAttribute('y',b-h);r.setAttribute('height',h)}));
+    const ver=N<=6||(N<=12?(i%2==(N-1)%2):(i%3==(N-1)%3));if(ver)sv.append(S('text',{x:x+bw/2,y:b-h-10,'text-anchor':'middle',class:'n','font-size':30,style:'fill:'+(i==N-1?col.menta:col.bla)},n(v/1000,1)));
+    if(ver)sv.append(S('text',{x:x+bw/2,y:b+30,'text-anchor':'middle'},"'"+String(27+i)));
+  });
+}
+// ---------- regla de valor
+function regla(m){
+  const sv=$('cR');sv.innerHTML='';const lo=300,hi=1450,X0=160,X1=680,px=v=>X0+(Math.min(Math.max(v,lo),hi)-lo)/(hi-lo)*(X1-X0);
+  for(let v=400;v<=1400;v+=200){sv.append(S('line',{x1:px(v),y1:20,x2:px(v),y2:330,stroke:'#1E2128'}));sv.append(S('text',{x:px(v),y:360,'text-anchor':'middle'},n(v)))}
+  const filas=[['DCF',357,676,513,col.menta],['Múltiplos',474,594,524,col.bla],['Analistas',940,1400,1157,col.azul]];
+  filas.forEach(([t,a,b,mid,c],i)=>{const y=48+i*78;
+    sv.append(S('text',{x:0,y:y+23,style:'fill:'+col.bla},t));
+    sv.append(S('rect',{x:px(a),y,width:px(b)-px(a),height:30,rx:15,fill:c,opacity:.9}));
+    sv.append(S('rect',{x:px(mid)-3,y:y-5,width:6,height:40,rx:3,fill:col.neg||'#08090B'}));
+    sv.append(S('text',{x:px(mid),y:y-9,'text-anchor':'middle',class:'n','font-size':26,style:'fill:'+c},n(mid)))});
+  sv.append(S('line',{x1:px(P),y1:14,x2:px(P),y2:330,stroke:col.rojo,'stroke-width':3,'stroke-dasharray':'6 5'}));
+  sv.append(S('text',{x:px(P),y:392,'text-anchor':'middle',style:'fill:'+col.rojo},'Precio de mercado 824'));
+  const y=276;sv.append(S('text',{x:0,y:y+20,style:'fill:'+col.ambar},'USTED'));
+  const g=S('g',{class:'mv',style:`transform:translateX(${px(m.precio)}px)`});
+  g.append(S('circle',{cx:0,cy:y+15,r:15,fill:col.ambar}));
+  g.append(S('text',{x:34,y:y+26,'text-anchor':'start',class:'n','font-size':34,style:'fill:'+col.ambar},(m.precio>hi?'> ':'')+n(m.precio)));
+  sv.append(g);
+}
+// ---------- SML
+function sml(m,rf,beta){
+  const sv=$('cS');sv.innerHTML='';const X0=84,X1=680,Y0=20,Y1=400,lo=-.6,hi=.8,sx=b=>X0+b/2*(X1-X0),sy=r=>Y1-(Math.min(Math.max(r,lo),hi)-lo)/(hi-lo)*(Y1-Y0);
+  [-.4,-.2,0,.2,.4,.6].forEach(r=>{sv.append(S('line',{x1:X0,y1:sy(r),x2:X1,y2:sy(r),stroke:r==0?'#3A3F48':'#1E2128'}));sv.append(S('text',{x:X0-10,y:sy(r)+8,'text-anchor':'end'},pc(r,0)))});
+  [0,.5,1,1.5,2].forEach(b=>sv.append(S('text',{x:sx(b),y:Y1+32,'text-anchor':'middle'},n(b,1))));
+  sv.append(S('text',{x:X1,y:Y1+62,'text-anchor':'end'},'beta'));
+  sv.append(S('line',{x1:sx(0),y1:sy(rf),x2:sx(2),y2:sy(rf+2*PRM),stroke:col.bla,'stroke-width':3}));
+  sv.append(S('text',{x:sx(1.9),y:sy(rf+1.9*PRM)-10,'text-anchor':'end',style:'fill:'+col.bla},'SML'));
+  const er=(m.precio-P+DPA)/P,era=(ANALISTAS-P+DPA)/P,ern=(512.67-P+DPA)/P;
+  const pt=(r,c,t,dx)=>{const g=S('g',{class:'mv',style:`transform:translate(${sx(beta)}px,${sy(r)}px)`});g.append(S('circle',{r:t=='USTED'?16:10,fill:c}));g.append(S('text',{x:dx,y:8,'text-anchor':dx<0?'end':'start',style:'fill:'+c},t+' '+(r>0?'+':'')+pc(r,0)));sv.append(g)};
+  pt(era,col.azul,'Analistas',-20);pt(ern,col.menta,'Nuestro DCF',-20);pt(er,col.ambar,'USTED',26);
+  const g=S('g',{class:'mv',style:`transform:translate(${sx(beta)}px,${sy(m.ke)}px)`});g.append(S('circle',{r:5,fill:col.bla}));sv.append(g);
+  $('fS').innerHTML=er<m.ke?`Su E(R) es <b style="color:var(--rojo)">${pc(er,0)}</b> y exige ${pc(m.ke,2)}: queda <b style="color:var(--rojo)">debajo</b> de la SML. Sobrevaluada.`:`Su E(R) es <b>+${pc(er,0)}</b> y exige ${pc(m.ke,2)}: queda <b>encima</b> de la SML. Subvaluada.`;
+}
+// ---------- VANOC
+function vanoc(m){
+  const sv=$('cV');sv.innerHTML='';const sin=Math.min(BPA/m.ke,P),W=700,a=sin/P*W;
+  sv.append(S('rect',{class:'bar',x:0,y:40,width:a-4,height:64,rx:10,fill:col.bla}));
+  sv.append(S('rect',{class:'bar',x:a,y:40,width:W-a,height:64,rx:10,fill:col.menta}));
+  sv.append(S('text',{x:0,y:26,style:'fill:'+col.bla},'Sin crecer US$ '+n(sin)));
+  sv.append(S('text',{x:W,y:26,'text-anchor':'end',style:'fill:'+col.menta},'VANOC US$ '+n(P-sin)));
+  sv.append(S('text',{x:W/2,y:140,'text-anchor':'middle'},'Precio de mercado US$ 824'));
+  const p=(P-sin)/P;$('fV').innerHTML=`<b>${n(p*100,0)} de cada 100 dólares</b> del precio pagan crecimiento que todavía no llegó.`;
+}
+// ---------- pares (fijo)
+function pares(){
+  const sv=$('cP'),d=[['Hitachi',20.0],['Schneider',20.1],['Siemens Energy',20.7],['Mitsubishi H.',21.3],['Eaton',22.5],['Vertiv',22.5],['GE Vernova',33.1]];
+  d.forEach(([t,v],i)=>{const y=8+i*50,w=v/36*400,c=t=='GE Vernova'?col.rojo:col.bla;
+    sv.append(S('text',{x:212,y:y+26,'text-anchor':'end',style:'fill:'+c},t));
+    sv.append(S('rect',{x:224,y,width:w,height:36,rx:18,fill:c}));
+    sv.append(S('text',{x:234+w,y:y+28,class:'n','font-size':30,style:'fill:'+c},n(v,0)+'x'))});
+  const x=224+21/36*400;sv.append(S('line',{x1:x,y1:0,x2:x,y2:356,stroke:col.menta,'stroke-width':2,'stroke-dasharray':'5 4'}));
+  sv.append(S('text',{x,y:386,'text-anchor':'middle',style:'fill:'+col.menta},'mediana 21x'));
+}
+// ---------- estado
+const ids=['A','R','M','G','B'];let ultimo='',MAN=null;
+function planilla(m,g){
+  const f=m.filas,N=f.length,L=i=>String.fromCharCode(66+i),cols=f.map((_,i)=>`<th>${i<25?L(i):'A'+L(i-25)}</th>`).join('');
+  const fila=(n_,t,fn,cls='')=>`<tr class="${cls}"><th>${n_}</th><td class="l">${t}</td>${f.map((x,i)=>`<td>${fn(x,i)}</td>`).join('')}</tr>`;
+  const inp=(k,i,v)=>`<input inputmode="decimal" data-k="${k}" data-i="${i}" value="${n(v*100,1)}">`;
+  const sup=(k,t,n_)=>`<tr><th>${n_}</th><td class="l">${t}</td><td>${`<input inputmode="decimal" data-k="${k}" value="${n(SUP[k]*100,1)}">`}</td>${'<td></td>'.repeat(N-1)}</tr>`;
+  const res=(n_,t,v,cls='')=>`<tr class="${cls}"><th>${n_}</th><td class="l">${t}</td><td>${v}</td>${'<td></td>'.repeat(N-1)}</tr>`;
+  $('xt').innerHTML=`<tr><th></th><th>A</th>${cols}</tr>`+
+   fila(1,'US$ millones',(x,i)=>2027+i,'h')+
+   fila(2,'Crecimiento %',(x,i)=>inp('c',i,x.c))+
+   fila(3,'Ventas',x=>n(x.nv))+
+   fila(4,'Margen EBITDA %',(x,i)=>inp('m',i,x.m))+
+   fila(5,'EBITDA',x=>n(x.eb))+
+   fila(6,'(–) Impuesto operativo',x=>n(-x.imp))+
+   fila(7,'(–) Capital de trabajo',x=>n(-x.ct))+
+   fila(8,'(–) CAPEX',x=>n(-x.cx))+
+   fila(9,'FCF',x=>n(x.fc),'t')+
+   fila(10,'Factor de descuento',x=>n(x.fd,4))+
+   fila(11,'Flujo descontado',x=>n(x.vp))+
+   sup('t','Impuesto %',12)+sup('capex','CAPEX / ventas %',13)+sup('da','D&A / ventas %',14)+sup('dwc','Cap. trabajo / Δ ventas %',15)+
+   res(16,'WACC',pc(m.w,2))+res(17,'g',pc(g,2))+
+   res(18,'VA de los flujos',n(m.pv))+res(19,'VA del valor terminal',n(m.vt))+res(20,'Valor de la empresa',n(m.ev),'t')+
+   res(21,'(+) Caja neta',n(CASH-DEBT-MINOR))+res(22,'Acciones (M)',n(SH,1))+res(23,'VALOR POR ACCIÓN',n(m.precio,1),'r');
+  $('xt').querySelectorAll('input').forEach(e=>{
+    e.onfocus=()=>{$('fx').textContent=e.dataset.k=='c'?'Crecimiento de ventas del año':e.dataset.k=='m'?'Margen EBITDA del año':'Supuesto general';e.select()};
+    e.onchange=()=>{const v=parseFloat(e.value.replace(',','.'))/100;if(isNaN(v))return calc();
+      if(e.dataset.i!=null){if(!MAN)MAN={c:m.filas.map(x=>x.c),m:m.filas.map(x=>x.m)};MAN[e.dataset.k][+e.dataset.i]=v}else SUP[e.dataset.k]=v;calc()}});
+}
+function calc(){
+  const a=+$('A').value,rf=$('R').value/100,mf=$('M').value/100,g=$('G').value/100,be=+$('B').value;
+  ids.forEach(i=>{const e=$(i);e.style.setProperty('--p',(e.value-e.min)/(e.max-e.min)*100+'%')});
+  $('vA').textContent=a+' años';$('vR').textContent=pc(rf,2);$('vM').textContent=pc(mf,0);$('vG').textContent=pc(g,2);$('vB').textContent=n(be,2);
+  const m=MAN?modelo(a,rf,mf,g,be,MAN.c,MAN.m):modelo(a,rf,mf,g,be),pot=m.precio/P-1;
+  $('rv').textContent='US$ '+n(m.precio);
+  $('rd').textContent=(pot>0?'+':'')+pc(pot,0)+' contra el precio (US$ 824)';
+  $('rd').style.color=pot<-.1?col.rojo:pot>.1?col.menta:col.ambar;
+  const s=pot<-.1?['SOBREVALUADA','NO COMPRAR',col.rojo]:pot>.1?['SUBVALUADA','COMPRAR',col.menta]:['PRECIO JUSTO','MANTENER',col.ambar];
+  const el=$('sello');el.innerHTML=s[0]+'<br><span style="font-size:14px;letter-spacing:.1em">'+s[1]+'</span>';el.style.background=s[2];
+  if(s[0]!=ultimo){el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');ultimo=s[0]}
+  $('eRf').textContent=pc(rf,2);$('eB').textContent=n(be,2);$('eK').textContent=pc(m.ke,2);$('kW').textContent=pc(m.w,2);
+  $('kEV').textContent=n(m.ev/1000,1);$('kVT').textContent=pc(m.pvt,0);
+  flujos(m);regla(m);sml(m,rf,be);vanoc(m);planilla(m,g);
+}
+const PRE={n:[5,5,22,3,1.25],m:[15,5,22,3,1.25],a:[20,5,25,3,1.25]};
+document.querySelectorAll('.pres button').forEach(b=>b.onclick=()=>{MAN=null;PRE[b.dataset.p].forEach((v,i)=>$(ids[i]).value=v);document.querySelectorAll('.pres button').forEach(x=>x.classList.toggle('on',x==b));calc()});
+$('xr').onclick=()=>{MAN=null;SUP={t:T,capex:CAPEX,da:DA,dwc:DWC};document.querySelector('[data-p=n]').click()};
+ids.forEach(i=>$(i).oninput=()=>{if(i=='A'||i=='M')MAN=null;document.querySelectorAll('.pres button').forEach(x=>x.classList.remove('on'));calc()});
+pares();calc();
+</script>
+</body>
+</html>
