@@ -70,7 +70,7 @@ svg .n{font-family:"Big Shoulders Display";font-weight:900}
 .frase{font-size:19px;font-weight:700;margin-top:12px}
 .frase b{color:var(--menta)}
 footer{color:var(--gris);font-size:12.5px;margin-top:40px;border-top:1px solid var(--lin);padding-top:16px}
-footer p{margin-top:6px}summary{cursor:pointer;font-weight:700;color:var(--bla)}
+footer p{margin-top:6px}.xls{display:block;text-align:center;background:var(--menta);color:var(--neg);font-weight:800;font-size:16px;padding:14px;border-radius:14px;text-decoration:none;margin-bottom:14px}summary{cursor:pointer;font-weight:700;color:var(--bla)}
 .xl{background:#fff;border-radius:14px;overflow:hidden;margin-top:12px;color:#1b1b1b;font-family:Arial,Helvetica,sans-serif}
 .xb{display:flex;gap:10px;align-items:center;background:#f3f3f3;border-bottom:1px solid #c8c8c8;padding:7px 10px;font-size:12.5px;color:#444}
 .xb b{font-style:italic;color:#107C41;font-family:Georgia,serif}
@@ -128,6 +128,12 @@ footer p{margin-top:6px}summary{cursor:pointer;font-weight:700;color:var(--bla)}
 </section>
 
 <section>
+  <h2>La acción, semana a semana</h2>
+  <div class="card"><svg id="cK" viewBox="0 0 700 420"></svg>
+  <p class="frase" id="fK"></p></div>
+</section>
+
+<section>
   <h2>CAPM</h2>
   <div class="card">
     <div class="eq"><span class="num" id="eRf"></span><span class="o">+</span><span class="num" id="eB"></span><span class="o">×</span><span class="num">5%</span><span class="o">=</span><span class="num" id="eK" style="color:var(--menta);font-size:56px"></span></div>
@@ -182,9 +188,10 @@ footer p{margin-top:6px}summary{cursor:pointer;font-weight:700;color:var(--bla)}
 </section>
 
 <footer>
+  <p><a class="xls" href="https://drive.google.com/file/d/1FjlsKm1NvzC6bpQGlU8amkEOKT-blhS0/view" target="_blank" rel="noopener">Ver el Excel completo del modelo →</a></p>
   <details><summary>Cómo se calcula y fuentes</summary>
   <p>Ventas × margen = EBITDA; menos impuesto operativo (21%), CAPEX (3,5% de ventas) y capital de trabajo (2% del aumento de ventas) = flujo libre. Descuento a mitad de año con la WACC. Valor terminal = último flujo × (1 + g) / (WACC − g). Valor de la empresa + caja neta (US$ 11.961 M) ÷ 264,7 M de acciones. El crecimiento baja de 14% a 8% a lo largo de los años de boom; con 5 años es nuestro caso base (US$ 513).</p>
-  <p>Datos: Bloomberg al 12/11/2026, U.S. Treasury, Damodaran, stockanalysis.com.</p>
+  <p>Datos: Bloomberg al 12/11/2026, U.S. Treasury, Damodaran, stockanalysis.com. Velas semanales armadas con los cierres diarios de Bloomberg.</p>
   </details>
   <p>Finanzas · UCA · Grupo 12. Ejercicio académico: no es una recomendación de inversión.</p>
 </footer>
@@ -266,6 +273,24 @@ function vanoc(m){
   sv.append(S('text',{x:W/2,y:140,'text-anchor':'middle'},'Precio de mercado US$ 824'));
   const p=(P-sin)/P;$('fV').innerHTML=`<b>${n(p*100,0)} de cada 100 dólares</b> del precio pagan crecimiento que todavía no llegó.`;
 }
+// ---------- velas semanales (cierres diarios de Bloomberg)
+const VELAS=[["240405",140,140,122.7,122.7],["240412",122.7,138.4,122.7,134],["240419",134,137.2,130.1,135.1],["240426",135.1,153.1,135.1,153.1],["240503",153.1,166.3,151.7,166.3],["240510",166.3,169.1,164,167.3],["240517",167.3,167.9,161.5,162.6],["240524",162.6,177.4,160.9,177.4],["240531",177.4,178.1,175.1,175.9],["240607",175.9,175.9,160.3,162.1],["240614",162.1,177.5,162.1,170.2],["240621",170.2,179.6,168.8,175.7],["240628",175.7,181.4,171.5,171.5],["240705",171.5,176.2,167.5,176.2],["240712",176.2,180.4,173.0,180.4],["240719",180.4,182.7,161.5,163.3],["240726",163.3,173.1,160,173.1],["240802",173.1,178.2,162.7,164.7],["240809",164.7,179.1,162.2,179.1],["240816",179.1,188.8,176.4,184.1],["240823",184.1,186,183.3,183.3],["240830",183.3,201,182.1,201],["240906",201,201,192.6,198.3],["240913",198.3,225.6,198.3,225.6],["240920",225.6,245.5,225.6,245.5],["240927",245.5,255.5,245.5,249.9],["241004",249.9,265.6,249.9,265.6],["241011",265.6,266.9,262.5,266.9],["241018",266.9,274.8,266.4,272.7],["241025",272.7,297,272.7,293.5],["241101",293.5,301.7,289.2,301.1],["241108",301.1,341.2,295.5,341.2],["241115",341.2,349.4,323.7,329.8],["241122",329.8,349.2,325.4,349.2],["241129",349.2,349.2,329.0,334.1],["241206",334.1,348.1,331.9,346.5],["241213",346.5,346.5,327.4,332.0],["241220",332.0,342.7,317.1,342.7],["241227",342.7,347.3,333.8,333.8],["250103",333.8,354.0,328.9,354.0],["250110",354.0,371.3,354.0,367.1],["250117",367.1,401.4,366.8,401.4],["250124",401.4,437.7,401.4,420.5],["250131",420.5,420.5,330,372.9],["250207",372.9,378.0,356.5,378.0],["250214",378.0,385,367.6,367.6],["250221",367.6,375.2,327.9,327.9],["250228",327.9,335.2,315.9,335.2],["250307",335.2,335.2,289.3,289.3],["250314",289.3,313.6,270.1,313.6],["250321",313.6,336.8,313.6,333.9],["250328",333.9,343.6,302.9,302.9],["250404",302.9,330.8,271.5,271.5],["250411",271.5,326.8,271.5,321.4],["250417",321.4,328.6,321.4,323.6],["250425",323.6,372.4,313.1,372.4],["250502",372.4,396.3,370.1,396.3],["250509",396.3,406.8,394,399.3],["250516",399.3,433.3,399.3,428.1],["250523",428.1,464.4,428.1,464.4],["250530",464.4,485.0,464.4,473.0],["250606",473.0,493.0,473.0,485],["250613",485,487.7,465.3,478.4],["250620",478.4,490.2,478.4,487.0],["250627",487.0,519.7,487.0,519.7],["250703",519.7,529.1,505.1,517.0],["250711",517.0,539.4,517.0,539.2],["250718",539.2,574.6,539.2,574.6],["250725",574.6,644.6,549.0,644.6],["250801",644.6,660.3,632.7,656.5],["250808",656.5,664.5,645.9,649.1],["250815",649.1,657.4,621.9,621.9],["250822",621.9,625.0,603.1,607.1],["250829",607.1,633.7,602.3,613.0],["250905",613.0,613.0,577.0,582.1],["250912",582.1,643.6,582.1,625.5],["250919",625.5,628.7,611,624.2],["250926",624.2,644.4,605.2,605.2],["251003",605.2,614.9,595.0,595.0],["251010",595.0,634.3,595.0,604.6],["251017",604.6,648.2,600,600],["251024",600,600,576,584.4],["251031",584.4,585.1,571.0,585.1],["251107",585.1,585.1,548.0,575.1],["251114",575.1,579.8,558.2,578.3],["251121",578.3,595.4,554.9,555.8],["251128",555.8,599.8,555.8,599.8],["251205",599.8,631.3,576.9,631.3],["251212",631.3,723,621.9,671.7],["251219",671.7,686.2,614.2,658.3],["251226",658.3,667.3,658.3,663.5],["260102",663.5,679.5,653.6,679.5],["260109",679.5,686.3,622.5,622.5],["260116",622.5,681.5,622.5,681.5],["260123",681.5,684.9,657.8,657.8],["260130",657.8,726.4,657.8,726.4],["260206",726.4,780.2,726.4,779.4],["260213",779.4,823.7,779.4,802.1],["260220",802.1,834.6,802.1,830.3],["260227",830.3,879.7,830.3,873.6],["260306",873.6,881.2,789.2,789.2],["260313",789.2,847.6,789.2,805.0],["260320",805.0,877.4,805.0,851.1],["260327",851.1,923.7,851.1,853.2],["260402",853.2,898.6,817.4,898.6],["260410",898.6,991.3,897.4,991.3],["260417",991.3,1002.8,978.3,1002.8],["260424",1002.8,1149.5,990.2,1149.2],["260501",1149.2,1149.2,1063.0,1063.0],["260508",1063.0,1119.0,1040.2,1040.2],["260515",1040.2,1090.5,1040.2,1049.2],["260522",1049.2,1049.2,1011.8,1038.7],["260529",1038.7,1070.5,968.3,968.3],["260605",968.3,969.7,933.6,933.6],["260612",933.6,940.7,867.1,940.7],["260618",940.7,1109.7,940.7,1109.7],["260626",1109.7,1127.6,1035.0,1045.2],["260702",1045.2,1174.9,1045.2,1113.1],["260710",1113.1,1152.0,1071.0,1091.6],["260717",1091.6,1091.6,1036.2,1057.8],["260724",1057.8,1079.2,985.0,1014.8],["260731",1014.8,1014.8,900.3,990.3],["260807",990.3,1018.5,990.3,990.3],["260814",990.3,1063.2,990.3,1063.2],["260821",1063.2,1079,956.9,956.9],["260828",956.9,956.9,911.9,911.9],["260904",911.9,942.0,898.5,942.0],["260911",942.0,971.3,923.9,957.3],["260918",957.3,957.3,874.8,940.3],["260925",940.3,957.6,940.3,957.6],["261002",957.6,988.7,949.8,988.7],["261009",988.7,1029.2,988.7,1004.7],["261016",1004.7,1004.7,921.2,921.2],["261023",921.2,925.9,815,815],["261030",815,895.1,815,857.9],["261106",857.9,918.2,770.5,774.1],["261112",774.1,829.3,774.1,826.6]];
+function velas(m){
+  const sv=$('cK');sv.innerHTML='';const X0=64,X1=694,Y0=14,Y1=368,lo=100,hi=1250,N=VELAS.length,w=(X1-X0)/N,y=v=>Y1-(Math.min(Math.max(v,lo),hi)-lo)/(hi-lo)*(Y1-Y0);
+  [200,400,600,800,1000,1200].forEach(v=>{sv.append(S('line',{x1:X0,y1:y(v),x2:X1,y2:y(v),stroke:'#1E2128'}));sv.append(S('text',{x:X0-8,y:y(v)+7,'text-anchor':'end','font-size':20},n(v)))});
+  let ant='';VELAS.forEach(([f,o,h,l,c],i)=>{const x=X0+i*w+w/2,col_=c>=o?col.menta:col.rojo;
+    sv.append(S('line',{x1:x,y1:y(h),x2:x,y2:y(l),stroke:col_,'stroke-width':1.2}));
+    sv.append(S('rect',{x:x-w*.36,y:Math.min(y(o),y(c)),width:w*.72,height:Math.max(1.5,Math.abs(y(o)-y(c))),fill:col_}));
+    const a='20'+f.slice(0,2);if(a!=ant){if(ant)sv.append(S('line',{x1:x-w/2,y1:Y0,x2:x-w/2,y2:Y1,stroke:'#2A2E35','stroke-dasharray':'3 4'}));sv.append(S('text',{x:x+2,y:Y1+28,'font-size':20},a));ant=a}});
+  sv.append(S('line',{x1:X0,y1:y(P),x2:X1,y2:y(P),stroke:col.bla,'stroke-width':1.5,'stroke-dasharray':'2 4'}));
+  sv.append(S('text',{x:X0+6,y:y(P)-8,'font-size':19,style:'fill:'+col.bla},'Precio 824'));
+  const g=S('g',{class:'mv',style:`transform:translateY(${y(m.precio)}px)`});
+  g.append(S('line',{x1:X0,y1:0,x2:X1,y2:0,stroke:col.ambar,'stroke-width':3}));
+  g.append(S('rect',{x:X1-150,y:-17,width:150,height:34,rx:8,fill:col.ambar}));
+  g.append(S('text',{x:X1-75,y:7,'text-anchor':'middle','font-size':20,style:'fill:#08090B'},'Su valor '+n(m.precio)));
+  sv.append(g);
+  $('fK').innerHTML=`De <b>US$ 123</b> en abril de 2024 a <b>US$ 824</b>: se multiplicó por 6,7 en dos años y medio.`;
+}
 // ---------- pares (fijo)
 function pares(){
   const sv=$('cP'),d=[['Hitachi',20.0],['Schneider',20.1],['Siemens Energy',20.7],['Mitsubishi H.',21.3],['Eaton',22.5],['Vertiv',22.5],['GE Vernova',33.1]];
@@ -318,7 +343,7 @@ function calc(){
   if(s[0]!=ultimo){el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');ultimo=s[0]}
   $('eRf').textContent=pc(rf,2);$('eB').textContent=n(be,2);$('eK').textContent=pc(m.ke,2);$('kW').textContent=pc(m.w,2);
   $('kEV').textContent=n(m.ev/1000,1);$('kVT').textContent=pc(m.pvt,0);
-  flujos(m);regla(m);sml(m,rf,be);vanoc(m);planilla(m,g);
+  velas(m);flujos(m);regla(m);sml(m,rf,be);vanoc(m);planilla(m,g);
 }
 const PRE={n:[5,5,22,3,1.25],m:[15,5,22,3,1.25],a:[20,5,25,3,1.25]};
 document.querySelectorAll('.pres button').forEach(b=>b.onclick=()=>{MAN=null;PRE[b.dataset.p].forEach((v,i)=>$(ids[i]).value=v);document.querySelectorAll('.pres button').forEach(x=>x.classList.toggle('on',x==b));calc()});
