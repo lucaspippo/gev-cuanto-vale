@@ -228,7 +228,7 @@ function flujos(m){
 function regla(m){
   const sv=$('cR');sv.innerHTML='';const lo=300,hi=1450,X0=160,X1=680,px=v=>X0+(Math.min(Math.max(v,lo),hi)-lo)/(hi-lo)*(X1-X0);
   for(let v=400;v<=1400;v+=200){sv.append(S('line',{x1:px(v),y1:20,x2:px(v),y2:330,stroke:'#1E2128'}));sv.append(S('text',{x:px(v),y:360,'text-anchor':'middle'},n(v)))}
-  const filas=[['DCF',357,676,513,col.menta],['Múltiplos',474,594,524,col.bla],['Analistas',940,1400,1157,col.azul]];
+  const filas=[['DCF',357,676,513,col.menta],['Múltiplos',474,594,524,col.bla],['Analistas',975,1400,1157,col.azul]];
   filas.forEach(([t,a,b,mid,c],i)=>{const y=48+i*78;
     sv.append(S('text',{x:0,y:y+23,style:'fill:'+col.bla},t));
     sv.append(S('rect',{x:px(a),y,width:px(b)-px(a),height:30,rx:15,fill:c,opacity:.9}));
